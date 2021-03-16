@@ -329,11 +329,132 @@ Function ListPermDefs
 
 Function ListUserPerms{
     Clear-Host
-    $userPermList = Read-Host -Prompt ' Enter User email address'
+    $userPermList = Read-Host -Prompt ' Enter User email address '
     Get-MailboxFolderPermission -Identity $userPermList':\calendar'
     pause
 }
 
+######## Add Calendar Permissions to an account ########
+
+Function AddPerms{
+    Clear-Host
+    $userParent = Read-Host -Prompt ' Enter parent email address '
+    $userChild = Read-Host -Prompt ' Enter child email address '
+    Do{
+    Write-Host -Object '******************************'
+    Write-Host -Object '  Select Permission to grant  '
+    Write-Host -Object '******************************'
+    Write-Host -Object '1.  Owner'
+    Write-Host -Object '2.  PublishingEditor'
+    Write-Host -Object '3.  Editor'
+    Write-Host -Object '4.  PublishingAuthor'
+    Write-Host -Object '5.  Author'
+    Write-Host -Object '6.  NonEditingAuthor'
+    Write-Host -Object '7.  Reviewer'
+    Write-Host -Object '8.  Contributor'
+    Write-Host -Object '9.  AvailabilityOnly'
+    Write-Host -Object '10. LimitedDetails'
+    Write-Host -Object '11. None'
+    Write-Host -Object $errout
+    $PermList = Read-Host -Prompt '(Q to Quit)'
+    switch ($PermList)
+    {
+        Q
+        {
+            ExchangeCal
+        }
+        1
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights Owner
+            pause
+            $PermList ='q'
+        }
+        2
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights PublishingEditor
+            pause
+            $PermList ='q'
+        }
+        3
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights Editor
+            pause
+            $PermList ='q'
+        }
+        4
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights PublishingAuthor
+            pause
+            $PermList ='q'
+        }
+        5
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights Author
+            pause
+            $PermList ='q'
+        }
+        6
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights NonEditingAuthor
+            pause
+            $PermList ='q'
+        }
+        7
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights Reviewer
+            pause
+            $PermList ='q'
+        }
+        8
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights Contributor
+            pause
+            $PermList ='q'
+        }
+        9
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights AvailabilityOnly
+            pause
+            $PermList ='q'
+        }
+        10
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights LimitedDetails
+            pause
+            $PermList ='q'
+        }
+        11
+        {
+            Add-MailboxFolderPermission -Identity $userParent':\calendar' -user $userChild -AccessRights None
+            pause
+            $PermList ='q'
+        }
+        default
+        {
+            $errout = ' Invalid option please try again........Try 1-11 or Q only'
+        }
+    }
+    }
+    Until ($PermList -eq 'q')
+}
+
+######## Delete calendar permissions from an account ########
+
+Function DelPerms{
+    Clear-Host
+    $userParent = Read-Host -Prompt ' Enter parent email address '
+    $userChild = Read-Host -Prompt ' Enter child email address '
+    $confirmation = Read-Host 'You are deleting permissions for ' $userChild ' on ' $userParent ' Correct? Y/N '
+    if ($confirmation -eq 'y')
+    {
+        Remove-MailboxFolderPermission -Identity $userParent':\calendar' –user $userChild
+        pause
+    }
+    else
+    {
+        DelPerms
+    }
+    }
 ######## Calendar Exchange Main Menu ########
 
 
@@ -382,11 +503,11 @@ Function ExchangeCal
             }
             4 
             {
-                ExchangeCal
+                AddPerms
             }
             5 
             {
-                ExchangeCal
+                DelPerms
             }
             Q 
             {
