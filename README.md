@@ -16,3 +16,4 @@ Here is where I will be storing any scripts I create to make Administration of M
 * M365 Exchange Calendar Admninistration
 * Export OneDrive Usage to a CSV
 
+**I accept no responsibility for script missuse, Scripts can be damaging if not used properly**
