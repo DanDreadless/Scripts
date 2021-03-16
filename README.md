@@ -1,13 +1,14 @@
-# Microsoft Utility Belt
+# POWERSHELL
+
+## Microsoft Utility Belt
 
 Here is where I will be storing any scripts I create to make Administration of Microsoft products easier.
 
 **This is an Administrator script and is intended to run with elevated permissions**
-# POWERSHELL
 
-## Utility.ps1 - **work in progress**
+### Utility.ps1 - **work in progress**
 
-## Current Abilities
+#### Current Abilities
 
 * Find Logged on User (RDP)
 * Find Logged on User Anywhere (SLOW)
