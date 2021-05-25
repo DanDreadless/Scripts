@@ -1,5 +1,7 @@
 # POWERSHELL
 
+Here is where I will be storing any scripts I create to make Administration of Microsoft products easier.
+
 ## EXCHANGE
 
 ### Various useful scripts to help with Exchange andministration
@@ -21,8 +23,6 @@
 
 
 ## UtilityBelt
-
-Here is where I will be storing any scripts I create to make Administration of Microsoft products easier.
 
 **This is an Administrator script and is intended to run with elevated permissions**
 
