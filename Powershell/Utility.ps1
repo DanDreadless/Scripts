@@ -1,11 +1,10 @@
-﻿# Created by Dreadless
+﻿# Willaims and Co IT Team Utility Suite
+# Created by Daniel Pickering
 
 ########## REQUIRED POWERSHELL MODULES BELOW ##########
 
 #Install-Module -Name Microsoft.Online.SharePoint.PowerShell -RequiredVersion 16.0.8029.0
 #Install-Module MSOnline
-#Windows RSAT required https://www.microsoft.com/en-us/download/details.aspx?id=45520
-
 
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
@@ -51,11 +50,9 @@ do {
 
 ######## FIND RDP USER AND PRINT TO SCREEN ########
 
-## Change the filter command to suit your requirements
-
 Function FindRDP {
 #Get all Servers' names in the Domain that are not enabled.
-$serverList=(Get-ADComputer -Filter ('(Name -Like "") -AND (Enabled -Eq "True")') | select-object Name).Name
+$serverList=(Get-ADComputer -Filter ('(Name -Like "*COMPUTERNAME*") -AND (Enabled -Eq "True")') | select-object Name).Name
 
 #Start a foreach cycle which will go through each Server in the ServerList
 foreach ($Server in $serverList)
@@ -105,7 +102,7 @@ do {
      Write-Host -Object ''
      $username = Read-Host -Prompt ' Enter Username'
      Write-Host -Object ' Searching....' -ForegroundColor Green
-switch ($username)
+     switch ($username)
      {
             Q 
             {
@@ -122,11 +119,9 @@ switch ($username)
 
 ######## FIND NON RDP USER AND PRINT TO SCREEN ########
 
-## Change Filter to suit requirements
-
 Function Find {
 #Get all Servers' names in the Domain that are enabled.
-$serverList=(Get-ADComputer -Filter ('(Name -NotLike "") -AND (Name -NotLike "") -AND (Enabled -Eq "True")') | select-object Name).Name
+$serverList=(Get-ADComputer -Filter ('(Name -NotLike "*COMPUTERNAME*") -AND (Name -NotLike "*COMPUTERNAME*") -AND (Name -NotLike "*COMPUTERNAME*") -AND (Enabled -Eq "True")') | select-object Name).Name
 
 #Start a foreach cycle which will go through each Server in the ServerList
 foreach ($Server in $serverList)
@@ -155,54 +150,51 @@ pause
 
 ################################################################### EXPORT LOCAL AD TO FILE AND IMPORT TO M365 ###################################################################################
 
-#Export Users from Local Domain to M365
-$filePath = "C:\Scripts\AD_Export_to_M365\AllADUsers.csv"
-
-## Change Filter to suit requirements
+$filePath = "C:\Scripts\AD_Export_to_M365\AllADUsers.csv" #CHANGEME
 
 ######## EXPORT ALL AD USERS INFO ########
-Function Local-All {
-Set-ExecutionPolicy RemoteSigned
-Import-Module ActiveDirectory
-Clear-Host
-Write-Host -Object ' Exporting....' -ForegroundColor Green
-Get-ADUser -Filter {(Name -NotLike "") -And (Mail -Like "*@*") -And (Name -NotLike "")} -Properties * |
- Select -Property mail,l,co,Department,displayName,givenName,sn,mobile,Office,telephoneNumber,postalCode,st,streetAddress,title | Sort-Object Department -Descending |
- Export-CSV $filePath -NoTypeInformation -Encoding UTF8
- Write-Host -Object ' Complete.' -ForegroundColor Green
- Write-Host -Object ' Location: $filePath' -ForegroundColor Green
- Write-Host ' Location: '$filePath -ForegroundColor Green
- pause
+Function Local-All 
+{
+    Set-ExecutionPolicy RemoteSigned
+    Import-Module ActiveDirectory
+    Clear-Host
+    Write-Host -Object ' Exporting....' -ForegroundColor Green
+    Get-ADUser -Filter {(Name -NotLike "*USERNAME*") -And (Mail -Like "*@*") -And (Name -NotLike "*USERNAME*") -And (Name -NotLike "*USERNAME*") -And (Name -NotLike "*USERNAME*") -And (Mail -NotLike "EMAIL@EMAIL.COM") -And (Mail -NotLike "EMAIL@EMAIL.COM") -And (Name -NotLike "USERNAME") -And (Name -NotLike "USERNAME*") -And (Name -NotLike "*USERNAME*") -And (Name -NotLike "*USERNAME*")} -Properties * |
+     Select -Property mail,l,co,Department,displayName,givenName,sn,mobile,Office,telephoneNumber,postalCode,st,streetAddress,title | Sort-Object Department -Descending | Export-CSV $filePath -NoTypeInformation -Encoding UTF8
+    Write-Host -Object ' Complete.' -ForegroundColor Green
+    Write-Host -Object ' Location: $filePath' -ForegroundColor Green
+    Write-Host ' Location: '$filePath -ForegroundColor Green
+    pause
 }
 
 ######## EXPORT SINGLE USER INFO ########
 
-Function Local-Single{
-Set-ExecutionPolicy RemoteSigned
-Import-Module ActiveDirectory
-Clear-Host
-$email = Read-Host -Prompt ' Enter User email address'
-Write-Host -Object ' Exporting.' -ForegroundColor Green
-Get-ADUser -Filter {(mail -Like $email)} -Properties * |
- Select -Property mail,l,co,Department,displayName,givenName,sn,mobile,Office,telephoneNumber,postalCode,st,streetAddress,title | Sort-Object Department -Descending |
- Export-CSV $filePath -NoTypeInformation -Encoding UTF8
- Write-Host -Object ' Complete.' -ForegroundColor Green
- Write-Host ' Location: '$filePath -ForegroundColor Green
-
- pause
+Function Local-Single
+{
+    Set-ExecutionPolicy RemoteSigned
+    Import-Module ActiveDirectory
+    Clear-Host
+    $email = Read-Host -Prompt ' Enter User email address'
+    Write-Host -Object ' Exporting.' -ForegroundColor Green
+    Get-ADUser -Filter {(mail -Like $email)} -Properties * | Select -Property mail,l,co,Department,displayName,givenName,sn,mobile,Office,telephoneNumber,postalCode,st,streetAddress,title | Sort-Object Department -Descending |
+     Export-CSV $filePath -NoTypeInformation -Encoding UTF8
+    Write-Host -Object ' Complete.' -ForegroundColor Green
+    Write-Host ' Location: '$filePath -ForegroundColor Green
+    pause
 }
 
 ######## IMPORT INFO TO M365 ########
 
-Function Import-M365{
-Set-ExecutionPolicy RemoteSigned
-Connect-MSolService
-Clear-Host
-Write-Host -Object ' Importing....' -ForegroundColor Green
-Import-Csv $filePath | 
-foreach{Set-MsolUser -UserPrincipalName $_.mail -City $_.l -Country $_.co -Department $_.Department -DisplayName $_.displayName -FirstName $_.givenName -LastName $_.sn -MobilePhone $_.mobile -Office $_.Office -PhoneNumber $_.telephoneNumber -PostalCode $_.postalCode -State $_.st -streetAddress $_.StreetAddress -Title $_.title}
-Write-Host -Object ' Complete.' -ForegroundColor Green
-pause
+Function Import-M365
+{
+    Set-ExecutionPolicy RemoteSigned
+    Connect-MSolService
+    Clear-Host
+    Write-Host -Object ' Importing....' -ForegroundColor Green
+    Import-Csv $filePath | 
+    foreach{Set-MsolUser -UserPrincipalName $_.mail -City $_.l -Country $_.co -Department $_.Department -DisplayName $_.displayName -FirstName $_.givenName -LastName $_.sn -MobilePhone $_.mobile -Office $_.Office -PhoneNumber $_.telephoneNumber -PostalCode $_.postalCode -State $_.st -streetAddress $_.StreetAddress -Title $_.title}
+    Write-Host -Object ' Complete.' -ForegroundColor Green
+    pause
 }
 
 ######## LOCAL AD TO M365 MENU ########
@@ -263,6 +255,7 @@ Function ADMicrosoft
 ######################################### Exchange Administration ########################################
 
 ######## Connect to Exchange ########
+
 Function ConnectExch
 {
     Clear-Host
@@ -344,22 +337,22 @@ Function AddPerms{
     $userParent = Read-Host -Prompt ' Enter parent email address '
     $userChild = Read-Host -Prompt ' Enter child email address '
     Do{
-    Write-Host -Object '******************************'
-    Write-Host -Object '  Select Permission to grant  '
-    Write-Host -Object '******************************'
-    Write-Host -Object '1.  Owner'
-    Write-Host -Object '2.  PublishingEditor'
-    Write-Host -Object '3.  Editor'
-    Write-Host -Object '4.  PublishingAuthor'
-    Write-Host -Object '5.  Author'
-    Write-Host -Object '6.  NonEditingAuthor'
-    Write-Host -Object '7.  Reviewer'
-    Write-Host -Object '8.  Contributor'
-    Write-Host -Object '9.  AvailabilityOnly'
-    Write-Host -Object '10. LimitedDetails'
-    Write-Host -Object '11. None'
-    Write-Host -Object $errout
-    $PermList = Read-Host -Prompt '(Q to Quit)'
+        Write-Host -Object '******************************'
+        Write-Host -Object '  Select Permission to grant  '
+        Write-Host -Object '******************************'
+        Write-Host -Object '1.  Owner'
+        Write-Host -Object '2.  PublishingEditor'
+        Write-Host -Object '3.  Editor'
+        Write-Host -Object '4.  PublishingAuthor'
+        Write-Host -Object '5.  Author'
+        Write-Host -Object '6.  NonEditingAuthor'
+        Write-Host -Object '7.  Reviewer'
+        Write-Host -Object '8.  Contributor'
+        Write-Host -Object '9.  AvailabilityOnly'
+        Write-Host -Object '10. LimitedDetails'
+        Write-Host -Object '11. None'
+        Write-Host -Object $errout
+        $PermList = Read-Host -Prompt '(Q to Quit)'
     switch ($PermList)
     {
         Q
@@ -462,18 +455,17 @@ Function DelPerms
 
 ######## Calendar Exchange Main Menu ########
 
-
 Function ExchangeCal
 {
     Clear-Host        
     Do
     {
         Clear-Host
-        Write-Host -Object '        _______  ______ _   _ ' -ForegroundColor Cyan
-        Write-Host -Object '       | ____\ \/ / ___| | | |' -ForegroundColor Cyan
-        Write-Host -Object '       |  _|  \  / |   | |_| |' -ForegroundColor Cyan
-        Write-Host -Object '       | |___ /  \ |___|  _  |' -ForegroundColor Cyan
-        Write-Host -Object '       |_____/_/\_\____|_| |_|' -ForegroundColor Cyan
+        Write-Host -Object '        _______  ______ _   _         ' -ForegroundColor Cyan
+        Write-Host -Object '       | ____\ \/ / ___| | | |        ' -ForegroundColor Cyan
+        Write-Host -Object '       |  _|  \  / |   | |_| |        ' -ForegroundColor Cyan
+        Write-Host -Object '       | |___ /  \ |___|  _  |        ' -ForegroundColor Cyan
+        Write-Host -Object '       |_____/_/\_\____|_| |_|        ' -ForegroundColor Cyan
         Write-Host -Object ''
         Write-Host -Object '**************************************'
         Write-Host -Object '   Exchange Calendar Administration   ' -ForegroundColor Cyan
@@ -529,6 +521,7 @@ Function ExchangeCal
   }
 
 ######## GET ONEDRIVE USAGE ########
+
 Function OneDrive
 {
     Clear-Host
@@ -539,8 +532,8 @@ Function OneDrive
     Write-Host -Object "      \                         .'  " -ForegroundColor Cyan
     Write-Host -Object "        ~- . _____________ . -~     " -ForegroundColor Cyan
     #Variable for SharePoint Online Admin Center URL
-    $AdminSiteURL=""  #add your admins sitre url here
-    $CSVFile = "C:\Scripts\OneDrives.csv" #change this to suit your environment
+    $AdminSiteURL="https://YOURCOMPANY.sharepoint.com/"
+    $CSVFile = "C:\Scripts\OneDrives.csv"
   
     #Connect to SharePoint Online Admin Center
     Connect-SPOService -Url $AdminSiteURL -credential (Get-Credential)
@@ -563,12 +556,23 @@ Function ExportMailboxes
     Import-PSSession $Session -DisableNameChecking
     Set-ExecutionPolicy RemoteSigned
     $mailExport = "C:\Scripts\Mailboxes.csv"
-    ## ## Change WHERE command to suit requirements
-    Get-Mailbox -RecipientTypeDetails UserMailbox -ResultSize Unlimited | where {$_.PrimarySmtpAddress -notlike '' -And $_.DisplayName -notlike 'Discovery Search Mailbox'} | Select-Object DisplayName, PrimarySmtpAddress | Sort-Object PrimarySmtpAddress | Export-Csv -Path $mailExport -NoTypeInformation -Encoding UTF8
+    Get-Mailbox -RecipientTypeDetails UserMailbox -ResultSize Unlimited | where {$_.PrimarySmtpAddress -notlike '*MAIL@MAIL.COM' -And $_.DisplayName -notlike 'Discovery Search Mailbox' -And $_.DisplayName -notlike 'Audits' -And $_.DisplayName -notlike 'NAME' -And $_.DisplayName -notlike 'NAME' -And $_.DisplayName -notlike 'NAME'} | Select-Object DisplayName, PrimarySmtpAddress | Sort-Object PrimarySmtpAddress | Export-Csv -Path $mailExport -NoTypeInformation -Encoding UTF8
     Write-Host -Object ' Complete.' -ForegroundColor Green
     Write-Host ' Location: '$mailExport -ForegroundColor Green
     pause
     Remove-PSSession $Session
+}
+
+######## Out Emplyee Directory ########
+
+## Call External Script ##
+
+Function OutED
+{
+    Clear-Host
+    $PSScriptRoot
+    $ScriptToRun = $PSScriptRoot+"\OutED.ps1"
+    &$ScriptToRun
 }
 
 ################################ M365 Administration Menu ################################
@@ -654,11 +658,13 @@ Function MainMenu
         Write-Host -Object ''
         Write-Host -Object ' 2.  Find Logged On User (SLOW)'
         Write-Host -Object ''
-        Write-Host -Object ' 3.  Office 365 Administration'
+        Write-Host -Object ' 3.  Update Employee Directory'
+        Write-Host -Object ''
+        Write-Host -Object ' 4.  Office 365 Administration'
         Write-Host -Object ''
         Write-Host -Object ' Q.  Quit'
         Write-Host -Object $errout
-        $Menu = Read-Host -Prompt '(1-3 or Q to Quit)'
+        $Menu = Read-Host -Prompt '(1-4 or Q to Quit)'
  
         switch ($Menu) 
         {
@@ -672,6 +678,10 @@ Function MainMenu
             }
             3 
             {
+                OutED
+            }
+            4
+            {
                 M365Menu
             }
             Q 
@@ -680,7 +690,7 @@ Function MainMenu
             }   
             default
             {
-                $errout = ' Invalid option please try again........Try 1-3 or Q only'
+                $errout = ' Invalid option please try again........Try 1-4 or Q only'
             }
  
         }
@@ -689,6 +699,7 @@ Function MainMenu
 }   
  
 # Launch The Menu
+
 MainMenu
 }
 else{
