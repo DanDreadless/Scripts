@@ -1,0 +1,1 @@
+﻿remove-printerport -name WSD-GET-THIS-FROM-PRINT-SERVER -computer COMPUTERNAME
