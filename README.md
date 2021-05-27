@@ -38,10 +38,13 @@ Enables you to remove those pesky WSD strings from print management ports sectio
 
 * Find Logged on User (RDP)
 * Find Logged on User Anywhere (SLOW)
-* Export Local Domain user information to M365
-* M365 Exchange Calendar Admninistration
-* Export OneDrive Usage to a CSV
-* Export domain users into a freiendly viewable web directory (requires amendments to OutED.ps1)
+* Update Employee Directory (from Active Directory displayed as a webpage)
+    * requires amendments to OutED.ps1
+* Office 365 Administration
+    * Export Local AD users to M365
+    * Exchange Calendar Administration
+    * Export OneDrive Usage to CSV
+    * Export List of Mailboxes to CSV
 
 **I accept no responsibility for script missuse, Scripts can be damaging if not used properly**
 
