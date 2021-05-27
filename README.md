@@ -1,6 +1,6 @@
-# <span style="color:blue">Batch</span>
+# Batch
 
-#### Robocopy.bat will backup files from one server to another
+Robocopy.bat will backup files from one server to another
 
 * Robocopy.bat
 
@@ -10,9 +10,9 @@ Here is where I will be storing any scripts I create to make Administration of M
 
 ## EXCHANGE
 
-### Various useful scripts to help with Exchange andministration
+Various useful scripts to help with Exchange andministration
 
-#### Read through scripts carefully as they will need modification to suit your environment
+Read through scripts carefully as they will need modification to suit your environment
 
 * ChangeGroupEmail.ps1
 * ConnectExchange.ps1
@@ -23,18 +23,18 @@ Here is where I will be storing any scripts I create to make Administration of M
 
 ## PrintServer
 
-### WsdRemove.ps1
+* WsdRemove.ps1
 
-* Enables you to remove those pesky WSD strings from print management ports section.
+Enables you to remove those pesky WSD strings from print management ports section.
 
 
 ## UtilityBelt
 
 **This is an Administrator script and is intended to run with elevated permissions**
 
-### Utility.ps1 - **work in progress**
+* Utility.ps1 - **work in progress**
 
-#### Current Abilities
+Current Abilities
 
 * Find Logged on User (RDP)
 * Find Logged on User Anywhere (SLOW)
@@ -47,11 +47,11 @@ Here is where I will be storing any scripts I create to make Administration of M
 
 # Python
 
-### Various xor scripts from CTF's created by teammate iDomino
+Various xor scripts from CTF's created by teammate iDomino
 
 * xor_aes_ctr.py
 * xor_no_key.py
 * xor_repeated_key.py
 * xor_single-byte.py
 
-#### Here for reference only
+Here for reference only
