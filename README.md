@@ -1,6 +1,6 @@
-> # Batch
+> Batch
 
->> #### Robocopy.bat will backup files from one server to another
+>> Robocopy.bat will backup files from one server to another
 
 >> * Robocopy.bat
 >
