@@ -1,8 +1,9 @@
-# Batch
+> # Batch
 
-#### Robocopy.bat will backup files from one server to another
+>> #### Robocopy.bat will backup files from one server to another
 
-* Robocopy.bat
+>> * Robocopy.bat
+>
 
 # POWERSHELL
 
@@ -25,7 +26,7 @@ Here is where I will be storing any scripts I create to make Administration of M
 
 ### WsdRemove.ps1
 
-* Enabeles you to remove those pesky WSD strings from print management ports section.
+* Enables you to remove those pesky WSD strings from print management ports section.
 
 
 ## UtilityBelt
